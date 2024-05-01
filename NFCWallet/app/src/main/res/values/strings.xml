@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">NFCWallet</string>
+    <string name="card_image">Card Image</string>
+    <string name="cards_list_title">Cards</string>
+    <string name="add_btn_string">Add</string>
+    <string name="save_btn_string">Save</string>
+
+</resources>
