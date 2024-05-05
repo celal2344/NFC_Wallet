@@ -1,3 +1,5 @@
+package com.example.nfcreader
+
 import android.nfc.cardemulation.HostApduService
 import android.os.Build
 import android.os.Bundle
@@ -21,8 +23,6 @@ class MyHostApduService : HostApduService() {
             // Process incoming APDU command
             val commandString = commandApdu.toHexString() // Convert byte array to string for logging
             Log.d(TAG, "Received APDU command: $commandString")
-
-
         }
 
         // If no specific response, return empty byte array

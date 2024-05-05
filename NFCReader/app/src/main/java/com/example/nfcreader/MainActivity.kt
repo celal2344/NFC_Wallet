@@ -2,7 +2,10 @@ package com.example.nfcreader
 
 import android.content.Intent
 import android.nfc.NfcAdapter
+import android.nfc.NfcAdapter.ReaderCallback
 import android.nfc.Tag
+import android.nfc.cardemulation.HostApduService
+import android.nfc.tech.IsoDep
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
@@ -19,7 +22,7 @@ import android.widget.Toast
 
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
-class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback  {
+class MainActivity : AppCompatActivity()  {
     private lateinit var nfcAdapter: NfcAdapter
     private var textView: TextView? = null
     private val TAG = "MainActivity"
@@ -78,63 +81,26 @@ class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback  {
             Toast.makeText(this, "Please enable NFC", Toast.LENGTH_SHORT).show()
         }
     }
-
     override fun onResume() {
         super.onResume()
-        // Enable NFC foreground dispatch
-        nfcAdapter?.enableForegroundDispatch(this, nfcAdapter?.let { NfcUtils.getPendingIntent(this, it) }, null, null)
+        // Start the HCE service
+        startHceService()
     }
 
     override fun onPause() {
         super.onPause()
-        // Disable NFC foreground dispatch
-        nfcAdapter?.disableForegroundDispatch(this)
+        // Stop the HCE service when the activity is paused
+        stopHceService()
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        processIntent(intent)
+    private fun startHceService() {
+        val intent = Intent(this, MyHostApduService::class.java)
+        startService(intent)
     }
 
-    private fun processIntent(intent: Intent) {
-        val action = intent.action
-        if (NfcAdapter.ACTION_TECH_DISCOVERED == action) {
-            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-            val ndef = Ndef.get(tag)
-            val text = NfcUtils.readNfcTag(ndef)
-            textView?.text = text
-        }
-    }
-    override fun onTagDiscovered(tag: Tag?) {
-        //WHEN NFC DATA RECEIVED SEND THE DATA THROUGH PAYMENTMETHOD PARAMS
-//        runCatching {
-//            stripe.createPaymentMethod(paymentMethodParams).id
-//        }.fold(
-//            onSuccess = { // paymentMethodId
-//                // Send the ID of the PaymentMethod to your server.
-//            },
-//            onFailure = {
-//                // Display the error to the customer.
-//            }
-//        )
-//    }
-//        println("onTagDiscovered")
-//        val isoDep = IsoDep.get(tag)
-//        isoDep.connect()
-//
-//        // Create Parser
-//        val parser = EmvTemplate.Builder()
-//            .setProvider(IsoDepProvider(isoDep)) // Define provider
-//            .setConfig(config) // Define config
-//            .build()
-//
-//        // Read card
-//        val emvCard = parser.readEmvCard()
-//
-//        isoDep.close()
-//        println("card detected $emvCard")
-
+    private fun stopHceService() {
+        val intent = Intent(this, MyHostApduService::class.java)
+        stopService(intent)
     }
 }
-
 data class PaymentRequest(val customerId: String, val paymentMethodId: String)
