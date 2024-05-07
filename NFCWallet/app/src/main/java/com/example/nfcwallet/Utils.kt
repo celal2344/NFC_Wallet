@@ -53,6 +53,7 @@ class ByteArrayHexUtil {
             return result
         }
 
+
         private val HEX_CHARS_ARRAY = "0123456789ABCDEF".toCharArray()
         fun toHex(byteArray: ByteArray) : String {
             val result = StringBuffer()

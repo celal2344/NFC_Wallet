@@ -13,8 +13,8 @@
         android:orientation="vertical">
         <TextView
             android:textColor="#fff"
-            android:text="@string/id_label"
-            android:id="@+id/labelID"
+            android:text=""
+            android:id="@+id/textView"
             android:textSize="25sp"
             android:padding="10dp"
             android:layout_marginStart="20dp"
@@ -22,14 +22,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:textColor="#fff"
-            android:id="@+id/textView"
-            android:textSize="25sp"
-            android:padding="10dp"
-            android:layout_marginEnd="20dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 </ScrollView>

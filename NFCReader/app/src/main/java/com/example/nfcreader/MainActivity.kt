@@ -19,15 +19,16 @@ import retrofit2.http.POST
 import android.nfc.tech.Ndef
 import android.widget.TextView
 import android.widget.Toast
+import kotlinx.coroutines.runBlocking
 
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
-class MainActivity : AppCompatActivity()  {
+class MainActivity : AppCompatActivity(), NfcAdapter.ReaderCallback{
     private lateinit var nfcAdapter: NfcAdapter
     private var textView: TextView? = null
     private val TAG = "MainActivity"
     companion object {
-        private const val BACKEND_URL = "http://192.168.1.24:4242"
+        private const val BACKEND_URL = "http://192.168.1.60:4242"
     }
 
     interface ApiService {
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity()  {
 //        suspend fun createPaymentMethod(@Body customerId: CustomerId): PaymentMethodResponse
     }
 
-    private suspend fun sendRequest(customerId: String,pmId: String) {
+    private suspend fun sendPayRequest(customerId: String,pmId: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl(BACKEND_URL)
             .client(OkHttpClient())
@@ -73,34 +74,34 @@ class MainActivity : AppCompatActivity()  {
             return
         }
 
-        // Initialize TextView
-        textView = findViewById(R.id.textView)
-
         // Check if NFC is enabled
         if (!nfcAdapter!!.isEnabled) {
             Toast.makeText(this, "Please enable NFC", Toast.LENGTH_SHORT).show()
         }
     }
-    override fun onResume() {
+    public override fun onResume() {
         super.onResume()
-        // Start the HCE service
-        startHceService()
+        nfcAdapter?.enableReaderMode(this, this,
+            NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
+            null)
     }
 
-    override fun onPause() {
+    public override fun onPause() {
         super.onPause()
-        // Stop the HCE service when the activity is paused
-        stopHceService()
+        nfcAdapter?.disableReaderMode(this)
     }
 
-    private fun startHceService() {
-        val intent = Intent(this, MyHostApduService::class.java)
-        startService(intent)
-    }
-
-    private fun stopHceService() {
-        val intent = Intent(this, MyHostApduService::class.java)
-        stopService(intent)
+    override fun onTagDiscovered(tag: Tag?) {
+        val isoDep = IsoDep.get(tag)
+        isoDep.connect()
+        val response = isoDep.transceive(NfcUtils.hexStringToByteArray(
+            "00A4040007A0000002471011"))
+        var responseStr = response.toString(Charsets.UTF_8)
+        runOnUiThread { binding.textView.append("\nCard Response: "
+                + responseStr) }
+        var custPmIdArr = responseStr.split("+")
+        runBlocking { sendPayRequest(custPmIdArr[0], custPmIdArr[1]) }
+        isoDep.close()
     }
 }
 data class PaymentRequest(val customerId: String, val paymentMethodId: String)

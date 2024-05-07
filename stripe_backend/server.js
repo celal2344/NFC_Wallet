@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('dev'));
 app.use(express.static("./public"));
 
-const YOUR_DOMAIN = '192.168.1.24';
+const YOUR_DOMAIN = '192.168.1.60';
 
 app.post('/create-payment-method', async (request, response) => {
   const paymentMethod = await stripe.paymentMethods.create({
