@@ -3,13 +3,15 @@ package com.example.nfcreader
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.wifi.WifiManager
 import android.nfc.NfcAdapter
-import android.nfc.Tag
 import android.nfc.tech.Ndef
-import android.widget.Toast
 
-object NfcUtils {
 
+
+
+
+object Utils {
     fun getPendingIntent(context: Context, adapter: NfcAdapter): PendingIntent? {
         return PendingIntent.getActivity(
             context, 0,

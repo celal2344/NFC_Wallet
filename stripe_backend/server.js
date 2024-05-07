@@ -16,7 +16,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('dev'));
 app.use(express.static("./public"));
 
-const YOUR_DOMAIN = '192.168.1.60';
+var ip = require("ip");
+console.dir ( ip.address );
+
+const YOUR_DOMAIN = ip.address();
 
 app.post('/create-payment-method', async (request, response) => {
   const paymentMethod = await stripe.paymentMethods.create({
@@ -44,7 +47,7 @@ app.post('/pay', async (request, response) => {
     let customerPaymentMethods = paymentMethods.data;
     for (let pm of customerPaymentMethods) {
       if(pm.id == request.body.paymentMethodId){//check if the payment method belongs to the customer
-        intent = await createPaymentIntent(customerId,request.body.paymentMethodId);//if the payment method belongs to the customer start payment intent process
+        intent = await createPaymentIntent(customerId,request.body.paymentMethodId,request.body.paymentAmount);//if the payment method belongs to the customer start payment intent process
         break;
       }
     };
@@ -53,10 +56,10 @@ app.post('/pay', async (request, response) => {
     console.log(e);
   }
 });
-async function createPaymentIntent(customerId, paymentMethodId) {
+async function createPaymentIntent(customerId, paymentMethodId,paymentAmount) {
   // Create the PaymentIntent
   let intent = await stripe.paymentIntents.create({
-    amount: 1099,
+    amount: paymentAmount*100,
     currency: 'usd',
     payment_method: paymentMethodId,
     confirm: true,
