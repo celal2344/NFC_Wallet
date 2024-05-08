@@ -12,8 +12,6 @@ import com.example.nfcwallet.databinding.ActivityCardBinding
 
 class CardActivity : AppCompatActivity(){
     private lateinit var binding: ActivityCardBinding
-    private var nfcAdapter: NfcAdapter? = null
-    public var myEditText: EditText? = null
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +19,7 @@ class CardActivity : AppCompatActivity(){
         binding = ActivityCardBinding.inflate(layoutInflater)
         setContentView(binding.root)
         var customerId = "cus_Pn4cWVLydHJXj2"//celal özdemir
-        var pmId = "pm_1PAA5eAk8ppQVwDwmewCFN2v"
+        var pmId = intent.getStringExtra("cardId")
 
         val intent = Intent(this@CardActivity, HostCardEmulatorService::class.java)
         val inputData = customerId + "+" + pmId

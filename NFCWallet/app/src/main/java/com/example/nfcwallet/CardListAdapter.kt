@@ -1,84 +1,54 @@
+import android.annotation.SuppressLint
 import android.content.Context
-import android.database.DataSetObserver
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.ImageView
-import android.widget.ListAdapter
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.example.nfcwallet.PaymentMethod
 import com.example.nfcwallet.R
+import com.example.nfcwallet.data.PaymentMethod
 
-class CardListAdapter(private val context: Context, private val paymentMethodList: List<PaymentMethod>) :
-    RecyclerView.Adapter<CardListAdapter.CardViewHolder>(), ListAdapter {
-
-    inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val cardImageView: ImageView = itemView.findViewById(R.id.card_image)
-        val last4DigitsTextView: TextView = itemView.findViewById(R.id.last_4_digits)
-        val expMonthTextView: TextView = itemView.findViewById(R.id.exp_month)
-        val expYearTextView: TextView = itemView.findViewById(R.id.exp_year)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false)
-        return CardViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        val paymentMethod = paymentMethodList[position]
-        val card = paymentMethod.card
-
-        // Set card image based on card brand
-        when (card.brand) {
-            "VISA" -> holder.cardImageView.setImageResource(R.mipmap.visa)
-            "MasterCard" -> holder.cardImageView.setImageResource(R.mipmap.master)
-            // Add cases for other card brands if needed
-            else -> holder.cardImageView.setImageResource(R.drawable.wallet)
-        }
-
-        holder.last4DigitsTextView.text = "**** **** **** ${card.last4}"
-        holder.expMonthTextView.text = String.format("%02d", card.expMonth)
-        holder.expYearTextView.text = card.expYear.toString().takeLast(2)
-    }
-
-    override fun getItemCount(): Int {
-        return paymentMethodList.size
-    }
-
-    override fun registerDataSetObserver(observer: DataSetObserver?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun unregisterDataSetObserver(observer: DataSetObserver?) {
-        TODO("Not yet implemented")
-    }
+class CardListAdapter(private val context: Context, private val paymentMethods: List<PaymentMethod>) : BaseAdapter() {
 
     override fun getCount(): Int {
-        TODO("Not yet implemented")
+        return paymentMethods.size
     }
 
-    override fun getItem(position: Int): Any {
-        TODO("Not yet implemented")
+    override fun getItem(position: Int): PaymentMethod {
+        return paymentMethods[position]
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        TODO("Not yet implemented")
-    }
+        var listItemView = convertView
+        if (listItemView == null) {
+            listItemView = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false)
+        }
 
-    override fun getViewTypeCount(): Int {
-        TODO("Not yet implemented")
-    }
+        val paymentMethod = getItem(position)
 
-    override fun isEmpty(): Boolean {
-        TODO("Not yet implemented")
-    }
+        // Bind data to views
+        val last4DigitsTextView = listItemView?.findViewById<TextView>(R.id.last_4_digits)
+        val expMonthTextView = listItemView?.findViewById<TextView>(R.id.exp_month)
+        val expYearTextView = listItemView?.findViewById<TextView>(R.id.exp_year)
+        val cardImageView = listItemView?.findViewById<ImageView>(R.id.card_image)
 
-    override fun areAllItemsEnabled(): Boolean {
-        TODO("Not yet implemented")
-    }
+        val imageResource = when (paymentMethod.card.brand) {
+            "visa" -> R.mipmap.visa
+            "mastercard" -> R.mipmap.master
+            else -> R.drawable.wallet
+        }
 
-    override fun isEnabled(position: Int): Boolean {
-        TODO("Not yet implemented")
+        cardImageView?.setImageResource(imageResource)
+        last4DigitsTextView?.text = "Last 4 Digits: ${paymentMethod.card.last4}"
+        expMonthTextView?.text = "Exp Month: ${paymentMethod.card.exp_month}"
+        expYearTextView?.text = "Exp Year: ${paymentMethod.card.exp_year}"
+
+        return listItemView!!
     }
 }

@@ -34,6 +34,31 @@ app.post('/create-payment-method', async (request, response) => {
   );
   return response.send(paymentMethod);
 });
+app.post('/create-payment-method', async (request, response) => {
+  const { customerId,cardNumber,expMonth,expYear,cvc } = request.body;
+  try {
+    const paymentMethodCreate = await stripe.paymentMethods.create({
+      type: 'card',
+      card: {
+        number: cardNumber,
+        exp_month: expMonth,
+        exp_year: expYear,
+        cvc: cvc,
+      },
+    });
+    const paymentMethod = await stripe.paymentMethods.attach(
+      paymentMethodCreate.id,
+      {
+        customer: customerId,
+      }
+    );
+    console.log(paymentMethod);
+    return response.send(paymentMethod);
+  } catch (error) {
+    console.error('Error occurred:', error.message);
+    return response.status(500).send('Internal Server Error');
+  }
+});
 app.post('/get-payment-method-list', async (request, response) => {
   const { customerId } = request.body; // Extract customerId from request body
   try {

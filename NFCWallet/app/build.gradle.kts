@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation ("com.github.kittinunf.fuel:fuel:2.3.1")
     implementation ("com.github.kittinunf.fuel:fuel-json:2.3.1")
     implementation ("com.github.devnied.emvnfccard:library:3.0.0")

@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/add_card_title"
         android:text="Please enter card details"
-        android:background="@android:color/holo_blue_dark"
         android:textSize="24sp"
         android:textAlignment="center"
         android:textFontWeight="1000"
@@ -20,34 +19,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginHorizontal="16dp"
-        android:hint="Enter Card Name"
-        android:id="@+id/add_card_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginVertical="24dp"
-        android:layout_marginHorizontal="16dp"
-        android:hint="Card Owner Name"
-        android:id="@+id/add_card_owner_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_card_name"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginVertical="24dp"
+        android:layout_marginVertical="64dp"
         android:layout_marginHorizontal="16dp"
         android:hint="Enter Card Number"
         android:autofillHints="creditCardNumber"
         android:id="@+id/add_card_number"
         android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_card_owner_name"/>
+        app:layout_constraintTop_toTopOf="parent"/>
     <Spinner
         android:layout_width="0dp"
         android:layout_height="48dp"
@@ -82,7 +61,7 @@
         android:autofillHints="creditCardSecurityCode"
         android:id="@+id/add_card_cvv"
         android:inputType="number"
-        android:maxLength="3"
+        android:maxLength="4"
         app:layout_constraintStart_toEndOf="@id/add_card_year"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_card_number"/>
