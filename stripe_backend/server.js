@@ -105,6 +105,7 @@ async function createPaymentIntent(customerId, paymentMethodId,paymentAmount) {
       allow_redirects: "never"
     }
   });
+  console.log(intent)
   return intent;
 }
 function generateResponse(response, intent) {

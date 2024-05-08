@@ -43,11 +43,9 @@ class MainActivity : AppCompatActivity() {
         cardsListView.setOnItemClickListener { _, _, position, _ ->
             val pmId = cardsList[position].id
             var i = Intent(this, CardActivity::class.java)
-            i.putExtra("cardID",pmId)
-
+            i.putExtra("pmId",pmId)
             startActivity(i)
         }
-
         val addCardButton = binding.addCardBtn
         addCardButton.setOnClickListener{
             var i2 = Intent(this, AddCardActivity::class.java)

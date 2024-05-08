@@ -19,15 +19,13 @@ class CardActivity : AppCompatActivity(){
         binding = ActivityCardBinding.inflate(layoutInflater)
         setContentView(binding.root)
         var customerId = "cus_Pn4cWVLydHJXj2"//celal özdemir
-        var pmId = intent.getStringExtra("cardId")
+        var pmId = intent.getStringExtra("pmId")
 
         val intent = Intent(this@CardActivity, HostCardEmulatorService::class.java)
         val inputData = customerId + "+" + pmId
         binding.textView.text = "Data to send: " + inputData
         intent.putExtra("input_data", inputData)
         startService(intent)
-
-
         val nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         if (nfcAdapter != null) {
             if (!nfcAdapter.isEnabled) {

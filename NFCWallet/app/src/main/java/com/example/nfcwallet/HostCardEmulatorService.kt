@@ -29,10 +29,11 @@ class HostCardEmulatorService: HostApduService() {
         println(hexCommandApdu)
         var response = inputData
         if (response != null){
+            val i = Intent(this@HostCardEmulatorService, MainActivity::class.java)
+            startActivity(i)
             return response.toByteArray()
         }else{
             return "No input data received".toByteArray()
         }
-
     }
 }
