@@ -4,21 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/card_name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/innerConstraint"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="8dp"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/innerConstraint"
-        app:layout_constraintTop_toBottomOf="@id/card_name"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
         <ImageView
             android:layout_width="64dp"
@@ -33,19 +23,25 @@
         <TextView
             android:layout_width="256dp"
             android:layout_height="wrap_content"
-            android:id="@+id/card_number"
+            android:id="@+id/last_4_digits"
             app:layout_constraintStart_toEndOf="@id/card_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/card_balance"
             android:layout_marginStart="48dp"
             android:layout_marginTop="8dp"/>
         <TextView
-            android:layout_width="256dp"
+            android:layout_width="128dp"
             android:layout_height="wrap_content"
-            android:id="@+id/card_balance"
-            app:layout_constraintTop_toBottomOf="@id/card_number"
+            android:id="@+id/exp_month"
+            app:layout_constraintTop_toBottomOf="@id/last_4_digits"
             app:layout_constraintStart_toEndOf="@id/card_image"
             android:layout_marginStart="48dp"
+            android:layout_marginTop="8dp"/>
+        <TextView
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/exp_year"
+            app:layout_constraintTop_toBottomOf="@id/last_4_digits"
+            app:layout_constraintStart_toEndOf="@id/exp_month"
             android:layout_marginTop="8dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

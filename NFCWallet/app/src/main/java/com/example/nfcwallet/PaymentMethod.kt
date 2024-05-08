@@ -12,6 +12,21 @@ data class PaymentMethod (
     val type: String
 )
 
+data class Card (
+    val brand: String,
+    val checks: Checks,
+    val country: String,
+    val expMonth: Long,
+    val expYear: Long,
+    val fingerprint: String,
+    val funding: String,
+    val generatedFrom: Any? = null,
+    val last4: String,
+    val networks: Networks,
+    val threeDSecureUsage: ThreeDSecureUsage,
+    val wallet: Any? = null
+)
+
 data class BillingDetails (
     val address: Address,
     val email: Any? = null,

@@ -34,6 +34,16 @@ app.post('/create-payment-method', async (request, response) => {
   );
   return response.send(paymentMethod);
 });
+app.post('/get-payment-method-list', async (request, response) => {
+  const { customerId } = request.body;
+  const paymentMethods = await stripe.customers.listPaymentMethods(
+    customerId,
+    {
+      limit: 50,
+    }
+  );
+  return response.send(paymentMethods);
+});
 app.post('/pay', async (request, response) => {
   try {
     let customerId = request.body.customerId;
