@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             cardsList = sendPaymentMethodListRequest(customerId).data
             println(cardsList.toString())
         }
-//        cardsListView.adapter = CardListAdapter(this@MainActivity, cardsList)
+        cardsListView.adapter = CardListAdapter(this@MainActivity, cardsList)
 //        cardsListView.setOnItemClickListener {parent, view, position, id ->
 
 //            val cardID = cardsList[position]

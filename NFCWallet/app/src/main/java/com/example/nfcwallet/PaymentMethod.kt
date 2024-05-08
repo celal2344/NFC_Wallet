@@ -58,5 +58,5 @@ data class Networks (
 data class ThreeDSecureUsage (
     val supported: Boolean
 )
-
+class Metadata()
 
