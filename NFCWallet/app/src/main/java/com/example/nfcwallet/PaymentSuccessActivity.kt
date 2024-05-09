@@ -1,9 +1,9 @@
-package com.example.nfcreader
+package com.example.nfcwallet
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.nfcreader.databinding.ActivityPaymentSuccessBinding
+import com.example.nfcwallet.databinding.ActivityPaymentSuccessBinding
 
 class PaymentSuccessActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaymentSuccessBinding
@@ -14,5 +14,6 @@ class PaymentSuccessActivity : AppCompatActivity() {
         binding.continueButton.setOnClickListener{
             startActivity(Intent(this@PaymentSuccessActivity, MainActivity::class.java))
         }
+
     }
 }

@@ -22,8 +22,7 @@ class CardActivity : AppCompatActivity(){
         var pmId = intent.getStringExtra("pmId")
 
         val intent = Intent(this@CardActivity, HostCardEmulatorService::class.java)
-        val inputData = customerId + "+" + pmId
-        binding.textView.text = "Data to send: " + inputData
+        val inputData = "$customerId+$pmId"
         intent.putExtra("input_data", inputData)
         startService(intent)
         val nfcAdapter = NfcAdapter.getDefaultAdapter(this)

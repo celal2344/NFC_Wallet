@@ -22,7 +22,7 @@ import retrofit2.http.POST
 class PaymentActivity : AppCompatActivity(), NfcAdapter.ReaderCallback{
     private lateinit var nfcAdapter: NfcAdapter
     companion object {
-        private var BACKEND_URL = "http://192.168.1.24:4242"
+        private var BACKEND_URL = "http://192.168.151.200:4242"
     }
     data class PaymentRequest(val customerId: String, val paymentMethodId: String, val paymentAmount: Int)
     interface ApiService {
@@ -38,10 +38,14 @@ class PaymentActivity : AppCompatActivity(), NfcAdapter.ReaderCallback{
         val apiService = retrofit.create(ApiService::class.java)
         try {
             val response = apiService.pay(PaymentRequest(customerId, pmId, paymentAmount))
+            Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show()
             println(response)
         } catch (e: Exception) {
+            Toast.makeText(this, "Payment not successful", Toast.LENGTH_SHORT).show()
             println("Error occurred: ${e.message}")
         }
+        val i = Intent(this@PaymentActivity, MainActivity::class.java)
+        startActivity(i)
     }
     private lateinit var binding: ActivityPaymentBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,31 +73,31 @@ class PaymentActivity : AppCompatActivity(), NfcAdapter.ReaderCallback{
         nfcAdapter?.disableReaderMode(this)
     }
     override fun onTagDiscovered(tag: Tag?) {
-        val isoDep = IsoDep.get(tag)
-        isoDep.connect()
-        this.runOnUiThread(Runnable {
-            Toast.makeText(this, "Please wait", Toast.LENGTH_LONG).show()
-        })
-        isoDep.timeout = 3000
-        val response = isoDep.transceive(Utils.hexStringToByteArray(
-            "00A4040007A0000002471011"))
-        var responseStr = response.toString(Charsets.UTF_8)
-        var custPmIdArr = responseStr.split("+")
-        var paymentAmount = intent.getStringExtra("paymentAmount")
-        println(custPmIdArr)
-        runBlocking {
-            try {
-                if(paymentAmount != null){
-                    val i = Intent(this@PaymentActivity, MainActivity::class.java)
-                    startActivity(i)
-                    sendPayRequest(custPmIdArr[0], custPmIdArr[1],paymentAmount.toInt())
+        try{
+            val isoDep = IsoDep.get(tag)
+            isoDep.connect()
+            isoDep.timeout = 5000
+            val response = isoDep.transceive(Utils.hexStringToByteArray(
+                "00A4040007A0000002471001"))
+            var responseStr = response.toString(Charsets.UTF_8)
+            var custPmIdArr = responseStr.split("+")
+            var paymentAmount = intent.getStringExtra("paymentAmount")
+            println(custPmIdArr)
+            runBlocking {
+                try {
+                    if(paymentAmount != null){
+                        sendPayRequest(custPmIdArr[0], custPmIdArr[1],paymentAmount.toInt())
+                    }
+                }catch(e:Exception){
+                    println(e)
                 }
-            }catch(e:Exception){
-                val i = Intent(this@PaymentActivity, MainActivity::class.java)
-                startActivity(i)
-                println(e)
             }
+            isoDep.close()
+            val i = Intent(this@PaymentActivity,PaymentSuccessActivity::class.java)
+            i.putExtra("paymentAmount",paymentAmount)
+            startActivity(i)
+        }catch(e:Exception){
+            println(e.message)
         }
-        isoDep.close()
     }
 }

@@ -29,7 +29,8 @@ class HostCardEmulatorService: HostApduService() {
         println(hexCommandApdu)
         var response = inputData
         if (response != null){
-            val i = Intent(this@HostCardEmulatorService, MainActivity::class.java)
+            val i = Intent(this@HostCardEmulatorService, PaymentSuccessActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(i)
             return response.toByteArray()
         }else{

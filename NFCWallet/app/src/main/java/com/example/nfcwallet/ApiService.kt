@@ -20,18 +20,14 @@ interface ApiService {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
+    data class CreatePaymentMethodRequest(val customerId: String,val cardNumber: String,val expMonth: Long,val expYear: Long,val cvc: String)
     @FormUrlEncoded
     @POST("/get-payment-method-list") // Replace with actual endpoint path
     suspend fun listPaymentMethods(@Field("customerId") id: String): PaymentMethodList
 
     @FormUrlEncoded
     @POST("/create-payment-method") // Replace with actual endpoint path
-    suspend fun createPaymentMethod(@Field("customerId") customerId: String,
-                                    @Field("cardNumber") cardNumber: String,
-                                    @Field("expMonth") expMonth: Long,
-                                    @Field("expYear") expYear: Long,
-                                    @Field("cvc") cvc: String): PaymentMethod
+    suspend fun createPaymentMethod(@Body createPaymentMethodRequest: CreatePaymentMethodRequest): PaymentMethod
     //cardNumber,expMonth,expYear,cvc
 
 }

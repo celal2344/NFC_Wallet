@@ -22,19 +22,6 @@ console.dir ( ip.address );
 const YOUR_DOMAIN = ip.address();
 
 app.post('/create-payment-method', async (request, response) => {
-  const paymentMethod = await stripe.paymentMethods.create({
-    type: 'card',
-    card: {token : "tok_visa"},
-  });
-  const attachedPaymentMethod = await stripe.paymentMethods.attach(
-    paymentMethod.id,
-    {
-      customer: request.body.customerId,
-    }
-  );
-  return response.send(paymentMethod);
-});
-app.post('/create-payment-method', async (request, response) => {
   const { customerId,cardNumber,expMonth,expYear,cvc } = request.body;
   try {
     const paymentMethodCreate = await stripe.paymentMethods.create({
@@ -105,7 +92,6 @@ async function createPaymentIntent(customerId, paymentMethodId,paymentAmount) {
       allow_redirects: "never"
     }
   });
-  console.log(intent)
   return intent;
 }
 function generateResponse(response, intent) {

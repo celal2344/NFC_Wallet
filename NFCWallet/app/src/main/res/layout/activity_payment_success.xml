@@ -31,9 +31,9 @@
     <Button
         android:layout_width="128dp"
         android:layout_height="64dp"
-        android:id="@+id/continue_button"
         android:text="Continue"
         android:textSize="18dp"
+        android:id="@+id/continue_button"
         app:layout_constraintTop_toBottomOf="@id/successMessage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

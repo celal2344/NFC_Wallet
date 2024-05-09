@@ -19,7 +19,6 @@ import java.time.LocalDate
 
 class AddCardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddcardBinding
-    private lateinit var newPaymentMethod :PaymentMethod
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,37 +43,27 @@ class AddCardActivity : AppCompatActivity() {
             val customerId = "cus_Pn4cWVLydHJXj2"//celal özdemir
             runBlocking {
                 try {
-                    newPaymentMethod = createPaymentMethodRequest(customerId,cardNumber,expMonth,expYear,cvc)!!
-                    println(newPaymentMethod.toString())
+                    val response = createPaymentMethodRequest(customerId,cardNumber,expMonth,expYear,cvc)
+                    println(response.toString())
                 }catch (e: Exception){
                     println(e.message)
                 }
             }
-            if(newPaymentMethod != null){
-                var mainIntent = Intent(this, MainActivity::class.java)
-                Toast.makeText(this, "Card successfully added", Toast.LENGTH_SHORT).show()
-                startActivity(mainIntent)
-            }else{
-                println("error")
-            }
         }
     }
 
-    private suspend fun createPaymentMethodRequest(customerId:String, cardNumber:String,expMonth:Long,expYear:Long,cvc:String): PaymentMethod? {
+    private suspend fun createPaymentMethodRequest(customerId:String, cardNumber:String,expMonth:Long,expYear:Long,cvc:String){
         val apiService = ApiService.retrofit.create(ApiService::class.java)
         try {
-            val response = apiService.createPaymentMethod(customerId,cardNumber,expMonth,expYear,cvc)
+            val response = apiService.createPaymentMethod(ApiService.CreatePaymentMethodRequest(customerId,cardNumber,expMonth,expYear,cvc))
+            Toast.makeText(this, "Card added", Toast.LENGTH_SHORT).show()
             println(response.toString())
-            return response
         } catch (e: Exception) {
+            Toast.makeText(this, "Error while adding card", Toast.LENGTH_SHORT).show()
             println("Error occurred: ${e.message}")
         }
-        return null
+        val i = Intent(this@AddCardActivity, MainActivity::class.java)
+        startActivity(i)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        var mainIntent = Intent(this, MainActivity::class.java)
-        startActivity(mainIntent)
-    }
 }
