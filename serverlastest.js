@@ -35,10 +35,10 @@ function decrypt(cipherText) {
 }
 app.post('/create-payment-method', async (request, response) => {
   const { customerId,encryptedData } = request.body;
+  console.log(request.body)
   const decryptedCardDetails = decrypt(encryptedData);
+  console.log(decryptedCardDetails)
   const decryptedCardDetailsArray = decryptedCardDetails.split(' ');
-  console.log(encryptedData)
-  console.log(decryptedCardDetailsArray)
   try {
     const token = await stripe.tokens.create({
       card: {

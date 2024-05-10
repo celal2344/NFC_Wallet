@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
             println(e.message)
         }
         if(cardsList != null) cardsListView.adapter = CardListAdapter(this@MainActivity, cardsList)
-        println(cardsList.toString())
         cardsListView.setOnItemClickListener { _, _, position, _ ->
             val pmId = cardsList[position].id
             var i = Intent(this, CardActivity::class.java)

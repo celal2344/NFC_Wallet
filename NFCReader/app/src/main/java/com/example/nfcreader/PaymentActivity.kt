@@ -6,6 +6,8 @@ import android.nfc.Tag
 import android.nfc.tech.IsoDep
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +24,7 @@ import retrofit2.http.POST
 class PaymentActivity : AppCompatActivity(), NfcAdapter.ReaderCallback{
     private lateinit var nfcAdapter: NfcAdapter
     companion object {
-        private var BACKEND_URL = "http://192.168.151.200:4242"
+        private var BACKEND_URL = "http://192.168.1.40:4242"
     }
     data class PaymentRequest(val customerId: String, val paymentMethodId: String, val paymentAmount: Int)
     interface ApiService {
@@ -38,10 +40,14 @@ class PaymentActivity : AppCompatActivity(), NfcAdapter.ReaderCallback{
         val apiService = retrofit.create(ApiService::class.java)
         try {
             val response = apiService.pay(PaymentRequest(customerId, pmId, paymentAmount))
-            Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show()
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show()
+            }
             println(response)
         } catch (e: Exception) {
-            Toast.makeText(this, "Payment not successful", Toast.LENGTH_SHORT).show()
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(this, "Payment not successful", Toast.LENGTH_SHORT).show()
+            }
             println("Error occurred: ${e.message}")
         }
         val i = Intent(this@PaymentActivity, MainActivity::class.java)

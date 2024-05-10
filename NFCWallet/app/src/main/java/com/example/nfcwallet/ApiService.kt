@@ -13,19 +13,18 @@ import java.time.Year
 
 interface ApiService {
     companion object {
-        private var BACKEND_URL = "http://192.168.151.200:4242"
+        private var BACKEND_URL = "http://192.168.1.40:4242"
         public val retrofit = Retrofit.Builder()
             .baseUrl(BACKEND_URL)
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-    data class CreatePaymentMethodRequest(val customerId: String,val cardNumber: String,val expMonth: Long,val expYear: Long,val cvc: String)
+    data class CreatePaymentMethodRequest(val customerId: String,val encryptedData: String)
     @FormUrlEncoded
     @POST("/get-payment-method-list") // Replace with actual endpoint path
     suspend fun listPaymentMethods(@Field("customerId") id: String): PaymentMethodList
 
-    @FormUrlEncoded
     @POST("/create-payment-method") // Replace with actual endpoint path
     suspend fun createPaymentMethod(@Body createPaymentMethodRequest: CreatePaymentMethodRequest): PaymentMethod
     //cardNumber,expMonth,expYear,cvc
