@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser')
-const stripe = require('stripe')('sk_test_51OxUL7Ak8ppQVwDwUbY0H0kKTIqnuJpIb1JsFRBoP4avMEomwFs62IWlMr4imyBQ2RoZP1mmWGhub7Orc73sX0nJ00H6pgCMfc');
+const stripe = require('stripe')('STRIPE_API_KEY');
 const crypto = require('crypto');
 
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
