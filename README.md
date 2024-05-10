@@ -15,7 +15,7 @@ To start a payment trader should enter the payment amount to the reader app. Whe
 When the nfc tag is received "onTagDiscovered" function initiates on the reader app and sends an APDU to the the writer then "processCommandApdu" function of the writer apps HCE class activates and returns the appropriate response to the reader.
 There is only 1 AID code inside the APDU that's been registered to the both applications so reader app won't read any other nfc writer.
 
-<img src="https://github.com/celal2344/NFC_Wallet/assets/69896844/2c884bd4-1a06-4c33-b381-ee99adf17dd0" height="400"><img src="https://github.com/celal2344/NFC_Wallet/assets/69896844/a18b25c4-82a4-49aa-a846-90ca20374770" height="400">
+<img src="https://github.com/celal2344/NFC_Wallet/assets/69896844/2c884bd4-1a06-4c33-b381-ee99adf17dd0" width="400"><img src="https://github.com/celal2344/NFC_Wallet/assets/69896844/a18b25c4-82a4-49aa-a846-90ca20374770" width="400">
 
 When the AID is confirmed on from the tag that has been received from the writer app using the isoDep.transceive method same function gets the customer ID and payment method ID from the tag and sends it to the server-side. 
 Server sends these 2 information to the API to handle the rest of the payment process. 
