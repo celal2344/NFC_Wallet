@@ -1,3 +1,5 @@
+Simple system that demonstrates NFC contactless payments from one phone to another. Includes 2 android applications and a Node.js server for API calls. Stripe API handles all the payment related operaions. 
+
 Used Express for the server-side of the project. Server connects to the Stripe API using Stripe's Node.js SDK. There are 3 routes on the server-side. 
 Whenever the user enters their card information the information gets encrypted on client-side using the AES encryption system then the encrypted message is sent to the server side using the '/create-payment-method' route and gets decrypted and sent to the Stripe API.
 
