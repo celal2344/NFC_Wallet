@@ -22,6 +22,8 @@ There is only 1 AID code inside the APDU that's been registered to the both appl
 When the AID is confirmed on from the tag that has been received from the writer app using the isoDep.transceive method same function gets the customer ID and payment method ID from the tag and sends it to the server-side. 
 Server sends these 2 information to the API to handle the rest of the payment process. 
 
-Note: This implementation sends test card information to the Stripe's API but Stripe API doesn't allow sending card informations to the api so instead of sending card information from the server-side sending sending a test card token solves the issue.
+Note: This implementation sends test card information to the Stripe's API but Stripe API doesn't allow sending card informations to the api so instead of sending card information from the server-side sending sending a test card token solves the issue. 
 <img src="https://github.com/celal2344/NFC_Wallet/assets/69896844/27a12300-19ed-47f6-badd-bcbaed4a4ee5" height="200">
+
+https://docs.stripe.com/api/cards/create
 
