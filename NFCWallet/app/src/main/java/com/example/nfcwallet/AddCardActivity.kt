@@ -8,9 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
-import com.example.nfcwallet.data.PaymentMethod
-import com.example.nfcwallet.data.PaymentMethodList
+import com.example.nfcwallet.Utils
 import com.example.nfcwallet.databinding.ActivityAddcardBinding
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -75,7 +73,7 @@ class AddCardActivity : AppCompatActivity() {
 
 
     private suspend fun createPaymentMethodRequest(customerId:String, cardNumber:String,expMonth:Long,expYear:Long,cvc:String){
-        val apiService = ApiService.retrofit.create(ApiService::class.java)
+        val apiService = Utils.retrofit.create(ApiService::class.java)
         try {
             val response = apiService.createPaymentMethod(ApiService.CreatePaymentMethodRequest(customerId,encryptCardDetails(listOf<String>(cardNumber,expMonth.toString(),expYear.toString(),cvc))))
             Toast.makeText(this, "Card added", Toast.LENGTH_SHORT).show()

@@ -1,5 +1,8 @@
 package com.example.nfcwallet
 
+import android.content.Context.WIFI_SERVICE
+import android.net.wifi.WifiManager
+import androidx.core.content.ContextCompat.getSystemService
 import com.example.nfcwallet.data.PaymentMethod
 import com.example.nfcwallet.data.PaymentMethodList
 import okhttp3.OkHttpClient
@@ -9,17 +12,15 @@ import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
-import java.time.Year
+import java.net.Inet4Address
+import java.net.InetAddress
+import java.net.NetworkInterface
+import java.net.SocketException
+import java.util.Enumeration
+import java.util.Formatter
+
 
 interface ApiService {
-    companion object {
-        private var BACKEND_URL = "http://192.168.1.40:4242"
-        public val retrofit = Retrofit.Builder()
-            .baseUrl(BACKEND_URL)
-            .client(OkHttpClient())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
     data class CreatePaymentMethodRequest(val customerId: String,val encryptedData: String)
     @FormUrlEncoded
     @POST("/get-payment-method-list") // Replace with actual endpoint path

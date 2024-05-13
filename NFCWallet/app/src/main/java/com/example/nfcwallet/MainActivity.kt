@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     private var cardsList : List<PaymentMethod> = emptyList()
 
     private suspend fun sendPaymentMethodListRequest(customerId: String): PaymentMethodList? {
-        val apiService = ApiService.retrofit.create(ApiService::class.java)
+        val apiService = Utils.retrofit.create(ApiService::class.java)
         try {
             return apiService.listPaymentMethods(customerId)
         } catch (e: Exception) {

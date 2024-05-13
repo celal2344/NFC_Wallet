@@ -1,0 +1,44 @@
+{
+    "cards":[
+        {
+            "token" : "tok_visa",
+            "number": "4242424242424242"
+        },
+        {
+            "token" : "tok_visa_debit",
+            "number": "4000056655665556"
+        },
+        {
+            "token" : "tok_mastercard",
+            "number": "5555555555554444"
+        },
+        {
+            "token" : "tok_mastercard_debit",
+            "number": "5200828282828210"
+        },
+        {
+            "token" : "tok_mastercard_prepaid",
+            "number": "5105105105105100"
+        },
+        {
+            "token" : "tok_amex",
+            "number": "378282246310005"
+        },
+        {
+            "token" : "tok_discover",
+            "number": "6011111111111117"
+        },
+        {
+            "token" : "tok_diners",
+            "number": "30569309025904"
+        },
+        {
+            "token" : "tok_jcb",
+            "number": "3530111333300000"
+        },
+        {
+            "token" : "tok_unionpay",
+            "number": "6200000000000005"
+        }
+    ]
+}

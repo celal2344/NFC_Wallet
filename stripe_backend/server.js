@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser')
 const stripe = require('stripe')('sk_test_51OxUL7Ak8ppQVwDwUbY0H0kKTIqnuJpIb1JsFRBoP4avMEomwFs62IWlMr4imyBQ2RoZP1mmWGhub7Orc73sX0nJ00H6pgCMfc');
 const crypto = require('crypto');
+const fs = require('fs');
 
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
@@ -14,6 +15,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan('dev'));
 app.use(express.static("./public"));
+
 
 var ip = require("ip");
 console.dir ( ip.address );
@@ -37,22 +39,33 @@ app.post('/create-payment-method', async (request, response) => {
   const { customerId,encryptedData } = request.body;
   const decryptedCardDetails = decrypt(encryptedData);
   const decryptedCardDetailsArray = decryptedCardDetails.split(' ');
-  console.log(encryptedData)
-  console.log(decryptedCardDetailsArray)
-  try {
-    const token = await stripe.tokens.create({
-      card: {
-        number: decryptedCardDetailsArray[0],
-        exp_month: parseInt(decryptedCardDetailsArray[1]),
-        exp_year: parseInt(decryptedCardDetailsArray[2]),
-        cvc: decryptedCardDetailsArray[3],
-      },
+  var token = "";
+  var jsonData = null;
+  fs.readFile('test_cards.json', 'utf8', (err, data) => 
+  {
+    if (err) {
+      console.error(err)
+      return
+    }
+    jsonData = JSON.parse(data);
+    jsonData.cards.forEach(card => {
+      if(card.number == decryptedCardDetailsArray[0]){
+        token = card.token;
+        createPaymentMethod(customerId,token,response)
+      };
     });
+  });
+  console.log(token);
+  console.log(decryptedCardDetailsArray)
+  
+});
+async function createPaymentMethod(customerId,token,response){
+  try {
     const paymentMethodCreate = await stripe.paymentMethods.create({
       type: 'card',
-      card: {
-        token: token.id,
-      },
+      card:{
+        token: token
+      }
     });
     const paymentMethod = await stripe.paymentMethods.attach(
       paymentMethodCreate.id,
@@ -66,7 +79,7 @@ app.post('/create-payment-method', async (request, response) => {
     console.error('Error occurred:', error.message);
     return response.status(500).send('Internal Server Error');
   }
-});
+}
 app.post('/get-payment-method-list', async (request, response) => {
   const { customerId } = request.body; // Extract customerId from request body
   try {
